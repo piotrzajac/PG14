@@ -23,13 +23,17 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-    - uses: actions/checkout@v4
-    - uses: hashicorp/setup-terraform@v3
+    - name: 📥 checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: 🪄 Terraform setup
+      uses: hashicorp/setup-terraform@v3
 
-    - name: Terraform fmt
+    - name: 🔬 Terraform fmt
       run: terraform fmt -check
       continue-on-error: true
 
-    - name: Terraform Init
+    - name: 🎬 Terraform Init
       id: init
       run: terraform init -input=false
