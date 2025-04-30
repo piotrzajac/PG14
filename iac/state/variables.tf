@@ -8,6 +8,11 @@ variable "subscription_id" {
   type        = string
 }
 
+variable "client_id" {
+  description = "The client ID"
+  type        = string
+}
+
 variable "location" {
   description = "The location of the resource group"
   type        = string
