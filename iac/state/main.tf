@@ -1,22 +1,15 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 4.2.0"
-    }
-  }
+data "azurerm_client_config" "current" {
 }
 
-provider "azurerm" {
-  use_msi         = true
-  msi_endpoint    = "http://169.254.169.254/metadata/identity/oauth2/v2.0/token"
-  tenant_id       = var.tenant_id
-  subscription_id = var.subscription_id
-  client_id       = var.client_id
-  features {}
+data "azurerm_subscription" "current" {
 }
 
-resource "azurerm_resource_group" "rg" {
-  name     = "rg-${local.project_name}-${local.area}"
+resource "azurerm_resource_group" "tf_state" {
+  name     = "rg-${local.project_name}-tf-state"
+  location = var.location
+}
+
+resource "azurerm_resource_group" "managed_identity" {
+  name     = "rg-${local.project_name}-managed-identity"
   location = var.location
 }
