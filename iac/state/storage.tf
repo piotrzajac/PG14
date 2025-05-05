@@ -8,7 +8,7 @@ resource "azurerm_storage_account" "tf_state_storage" {
 
 resource "azurerm_storage_container" "container" {
   count                 = length(local.environments)
-  name                  = "sc-${local.project_name}-${local.environments[count.index]}-tf-state"
+  name                  = "sc-${local.project_name}-tf-state-${local.environments[count.index]}"
   storage_account_id    = azurerm_storage_account.tf_state_storage.id
   container_access_type = "private"
 }
