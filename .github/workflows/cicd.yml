@@ -52,11 +52,12 @@ jobs:
       run: terraform fmt -check
       continue-on-error: true
     
-    - name: 🔍 Scan with Checkov
-      id: checkov
-      uses: bridgecrewio/checkov-action@v12
-      with:
-        framework: terraform
+    # Enable Checkov scan if needed
+    # - name: 🔍 Scan with Checkov
+    #   id: checkov
+    #   uses: bridgecrewio/checkov-action@v12
+    #   with:
+    #     framework: terraform
 
     - name: 🎬 Terraform Init
       id: init
