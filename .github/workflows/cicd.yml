@@ -121,6 +121,9 @@ jobs:
     needs: terraform-plan
     name: Terraform Apply
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIR }}
     environment:
       name: ${{ inputs.environment }}
     steps:
