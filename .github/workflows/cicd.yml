@@ -7,6 +7,12 @@ on:
       - '.github/workflows/cicd.yml'
     types: [opened, synchronize, reopened]
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'
+        type: environment
+        required: true
+        default: dev
 
 permissions:
   contents: read
@@ -31,6 +37,8 @@ concurrency:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment }}
     steps:
     - name: 📥 checkout
       uses: actions/checkout@v4
