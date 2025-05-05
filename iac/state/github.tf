@@ -35,3 +35,11 @@ resource "github_repository_environment" "environments" {
     users = [data.github_user.current.id]
   }
 }
+
+resource "github_actions_environment_variable" "environment_variables" {
+  count         = length(local.environments)
+  environment   = github_repository_environment.environments[count.index].environment
+  repository    = var.github_repository
+  variable_name = "TF_STATE_AZURE_CONTAINER_NAME"
+  value         = azurerm_storage_container.container[count.index].name
+}
