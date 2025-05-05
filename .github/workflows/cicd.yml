@@ -1,16 +1,27 @@
-name: '💾 CI/CD for Terraform State'
+name: '♻️ CI/CD'
 
 on:
   pull_request:
     paths:
       - 'iac/state/**'
-      - '.github/workflows/cicd-state.yml'
+      - '.github/workflows/cicd.yml'
     types: [opened, synchronize, reopened]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+env:
+  ARM_CLIENT_ID: ${{ secrets.TF_STATE_AZURE_CLIENT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.TF_STATE_AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.TF_STATE_AZURE_TENANT_ID }}
+  ARM_USE_AZUREAD: true
+
 defaults:
   run:
-    working-directory: ./iac/state
+    working-directory: ./iac/solution
 
 
 concurrency:
@@ -20,8 +31,6 @@ concurrency:
 jobs:
   terraform:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
     steps:
     - name: 📥 checkout
       uses: actions/checkout@v4
@@ -35,12 +44,8 @@ jobs:
       continue-on-error: true
 
     - name: 🎬 Terraform Init
-      run: terraform init -input=false
+      run: terraform init -input=false -backend-config="resource_group_name=${{vars.TF_STATE_AZURE_RESOURCE_GROUP_NAME}}" -backend-config="storage_account_name=${{vars.TF_STATE_AZURE_STORAGE_ACCOUNT_NAME}}" -backend-config="container_name=${{vars.TF_STATE_AZURE_CONTAINER_NAME}}"
 
     - name: 📃 Terraform Plan
       run: terraform plan -no-color -input=false
       continue-on-error: true
-      env:
-        TF_VAR_tenant_id: ${{ secrets.STATE_TENANT_ID }}
-        TF_VAR_subscription_id: ${{ secrets.STATE_SUBSCRIPTION_ID }}
-        TF_VAR_client_id: ${{ secrets.STATE_CLIENT_ID }}
