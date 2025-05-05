@@ -52,8 +52,8 @@ jobs:
       continue-on-error: true
 
     - name: 🎬 Terraform Init
-      run: terraform init -input=false -backend-config="resource_group_name=${{vars.TF_STATE_AZURE_RESOURCE_GROUP_NAME}}" -backend-config="storage_account_name=${{vars.TF_STATE_AZURE_STORAGE_ACCOUNT_NAME}}" -backend-config="container_name=${{vars.TF_STATE_AZURE_CONTAINER_NAME}}" -backend-config="environment=${{inputs.environment}}"
+      run: terraform init -input=false -backend-config="resource_group_name=${{vars.TF_STATE_AZURE_RESOURCE_GROUP_NAME}}" -backend-config="storage_account_name=${{vars.TF_STATE_AZURE_STORAGE_ACCOUNT_NAME}}" -backend-config="container_name=${{vars.TF_STATE_AZURE_CONTAINER_NAME}}"
 
     - name: 📃 Terraform Plan
-      run: terraform plan -no-color -input=false
+      run: terraform plan -no-color -input=false -var="environment=${{ inputs.environment }}"
       continue-on-error: true
