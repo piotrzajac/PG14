@@ -1,4 +1,4 @@
-name: '♻️ CI/CD'
+name: '♻️ CI/CD - apply'
 
 on:
   pull_request:
